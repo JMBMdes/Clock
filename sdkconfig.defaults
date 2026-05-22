@@ -7,8 +7,15 @@ CONFIG_FREERTOS_HZ=1000
 # Flash
 CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
 
+# Custom partition table — factory 1.3 MB to fit WiFi + LVGL binary
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions-4mb.csv"
+
 # Logging
 CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# SNTP resync every 60 minutes (FR-2.4)
+CONFIG_LWIP_SNTP_UPDATE_DELAY=3600000
 
 # SPI DMA — allow large transfers for framebuffer flush
 CONFIG_SPI_MASTER_ISR_IN_IRAM=y

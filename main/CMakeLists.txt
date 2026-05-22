@@ -3,8 +3,21 @@ idf_component_register(
         "main.c"
         "display.c"
         "clock_face.c"
+        "clock_task.c"
+        "config.c"
+        "wifi_manager.c"
+        "sntp_sync.c"
+        "dns_redirect.c"
+        "portal.c"
+        "button.c"
     INCLUDE_DIRS "."
     REQUIRES
         esp_lcd
         driver
+        nvs_flash
+        esp_wifi
+        esp_netif
+        esp_event
+        esp_http_server
+        lwip
 )
