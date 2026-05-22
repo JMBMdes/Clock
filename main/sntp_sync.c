@@ -1,9 +1,8 @@
 #include "sntp_sync.h"
-#include "esp_sntp.h"
+#include "esp_netif_sntp.h"
 #include "esp_log.h"
 #include "freertos/event_groups.h"
 #include <time.h>
-#include <stdlib.h>
 
 static const char *TAG = "sntp_sync";
 
@@ -15,8 +14,7 @@ static void sync_cb(struct timeval *tv)
     localtime_r(&tv->tv_sec, &t);
     char buf[32];
     strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &t);
-    ESP_LOGI(TAG, "SNTP synced: %s (delta %+.3f s)", buf,
-             (double)tv->tv_usec / 1e6);
+    ESP_LOGI(TAG, "SNTP synced: %s", buf);
     xEventGroupSetBits(g_sntp_event_group, SNTP_SYNCED_BIT);
 }
 
@@ -28,11 +26,13 @@ void sntp_sync_start(const char *server, const char *tz_str)
     tzset();
     ESP_LOGI(TAG, "TZ set to: %s", tz_str);
 
-    sntp_setoperatingmode(SNTP_OPMODE_POLL);
-    sntp_setservername(0, server);
-    sntp_set_time_sync_notification_cb(sync_cb);
-    sntp_init();
-    ESP_LOGI(TAG, "SNTP started, server: %s", server);
+    esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG(server);
+    config.sync_cb = sync_cb;
+    config.num_of_servers = 2;
+    config.servers[1] = "216.239.35.0";  /* Google NTP IP — fallback if DNS fails */
+    esp_netif_sntp_init(&config);
+
+    ESP_LOGI(TAG, "SNTP started, servers: %s + 216.239.35.0", server);
 }
 
 bool sntp_sync_is_synced(void)

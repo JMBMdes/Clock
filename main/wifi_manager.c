@@ -75,6 +75,7 @@ void wifi_manager_start_sta(const char *ssid, const char *pass)
     wifi_cfg.sta.pmf_cfg.required   = false;
 
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_cfg));
+    ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
     ESP_ERROR_CHECK(esp_wifi_start());
     ESP_LOGI(TAG, "STA connecting to: %s", ssid);
 }

@@ -16,6 +16,18 @@ CONFIG_LOG_DEFAULT_LEVEL_INFO=y
 
 # SNTP resync every 60 minutes (FR-2.4)
 CONFIG_LWIP_SNTP_UPDATE_DELAY=3600000
+CONFIG_LWIP_SNTP_MAX_SERVERS=2
+
+# PSRAM — required for 480x480 RGB framebuffer (450 KB, won't fit in internal RAM)
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+# Fetch instructions/rodata from PSRAM so DCache suspend doesn't crash the bounce buffer ISR
+CONFIG_SPIRAM_FETCH_INSTRUCTIONS=y
+CONFIG_SPIRAM_RODATA=y
+
+# RGB LCD ISR in IRAM for smooth display
+CONFIG_LCD_RGB_ISR_IRAM_SAFE=y
 
 # SPI DMA — allow large transfers for framebuffer flush
 CONFIG_SPI_MASTER_ISR_IN_IRAM=y
