@@ -1,0 +1,14 @@
+# CPU
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+
+# FreeRTOS — 1 ms tick needed for LVGL timers
+CONFIG_FREERTOS_HZ=1000
+
+# Flash
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+# Logging
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# SPI DMA — allow large transfers for framebuffer flush
+CONFIG_SPI_MASTER_ISR_IN_IRAM=y
